@@ -14,17 +14,17 @@
 #define PRIV_DEBUG PRIV_DEBUG_DEFAULT
 #endif
 
-/* Space reserved for program and arguments. */
-#define MAX_COMMAND_LEN     512         /* maximum argument string length */
-#define MAX_SCRIPT_LEN      256         /* maximum restart script name length */
+/* Space reserved for program and arguments.(为程序和参数保留的空间。) */
+#define MAX_COMMAND_LEN     512         /* maximum argument string length(最大参数字符串长度) */
+#define MAX_SCRIPT_LEN      256         /* maximum restart script name length(最大重启脚本名称长度) */
 #define MAX_NR_ARGS          10         /* maximum number of arguments */
 
 #define MAX_IPC_LIST        256         /* Max size of list for IPC target
                                          * process names
                                          */
-#define MAX_DET_RESTART      10         /* maximum number of detached restarts. */
+#define MAX_DET_RESTART      10         /* maximum number of detached restarts(分离重启的最大次数). */
 
-/* Flag values. */
+/* Flag values.(标记值) */
 #define RS_IN_USE       0x001    /* set when process slot is in use */
 #define RS_EXITING      0x002    /* set when exit is expected */
 #define RS_REFRESHING   0x004    /* set when refresh must be done */
