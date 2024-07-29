@@ -1,4 +1,4 @@
-/* Global constants used in RS.
+/* Global constants(常量) used in RS.
  */
 #ifndef RS_CONST_H
 #define RS_CONST_H
@@ -25,59 +25,59 @@
 #define MAX_DET_RESTART      10         /* maximum number of detached restarts(分离重启的最大次数). */
 
 /* Flag values.(标记值) */
-#define RS_IN_USE       0x001    /* set when process slot is in use */
-#define RS_EXITING      0x002    /* set when exit is expected */
-#define RS_REFRESHING   0x004    /* set when refresh must be done */
-#define RS_NOPINGREPLY  0x008    /* service failed to reply to a ping request */
-#define RS_TERMINATED   0x010    /* service has terminated */
-#define RS_LATEREPLY    0x020    /* no reply sent to RS_DOWN caller yet */
+#define RS_IN_USE       0x001    /* set when process slot(进程槽) is in use */
+#define RS_EXITING      0x002    /* set when exit is expected(期待/预计退出) */
+#define RS_REFRESHING   0x004    /* set when refresh(刷新) must be done(设置必须进行刷新的时间) */
+#define RS_NOPINGREPLY  0x008    /* service failed to reply(回复) to a ping request(服务未能回复ping请求) */
+#define RS_TERMINATED   0x010    /* service has terminated(终止) */
+#define RS_LATEREPLY    0x020    /* no reply(回复) sent to RS_DOWN caller yet */
 #define RS_INITIALIZING 0x040    /* set when init is in progress */
 #define RS_UPDATING     0x080    /* set when update is in progress */
-#define RS_PREPARE_DONE 0x100    /* set when updating and preparation is done */
+#define RS_PREPARE_DONE 0x100    /* set when updating and preparation(准备) is done */
 #define RS_INIT_DONE    0x200    /* set when updating and init is done */
-#define RS_INIT_PENDING 0x400    /* set when updating and init is pending */
+#define RS_INIT_PENDING 0x400    /* set when updating and init is pending(待定；待决；悬而未决的) */
 #define RS_ACTIVE       0x800    /* set for the active instance of a service */
-#define RS_DEAD         0x1000   /* set for an instance ready to be cleaned up */
-#define RS_CLEANUP_DETACH 0x2000   /* detach at cleanup time */
-#define RS_CLEANUP_SCRIPT 0x4000   /* run script at cleanup time */
-#define RS_REINCARNATE    0x8000   /* after exit, restart with a new endpoint */
+#define RS_DEAD         0x1000   /* set for an instance ready to be cleaned up(清理；清除) */
+#define RS_CLEANUP_DETACH 0x2000   /* detach at cleanup time(在清理时分离) */
+#define RS_CLEANUP_SCRIPT 0x4000   /* run script at cleanup time(清理时间) (REINCARNATE:使再生) */
+#define RS_REINCARNATE    0x8000   /* after exit, restart with a new endpoint(退出后，使用新端点重新启动) */
 
 #define RS_SRV_IS_IDLE(S) (((S)->r_flags & RS_DEAD) || ((S)->r_flags & ~(RS_IN_USE|RS_ACTIVE|RS_CLEANUP_DETACH|RS_CLEANUP_SCRIPT)) == 0)
 
-/* Constants determining RS period and binary exponential backoff. */
+/* Constants determining(确定) RS period and binary exponential backoff.(确定RS周期和二进制指数退避的常数。) */
 #define RS_INIT_T	(system_hz * 10)	/* allow T ticks for init */
 #define RS_DELTA_T	(system_hz)		/* check every T ticks */
-#define BACKOFF_BITS    (sizeof(long)*8)        /* bits in backoff field */
+#define BACKOFF_BITS    (sizeof(long)*8)        /* bits in backoff field(退避字段中的位) */
 #define MAX_BACKOFF      30                     /* max backoff in RS_DELTA_T */
 
-/* Magic process table addresses. */
+/* Magic process table addresses.(魔术进程表地址) */
 #define BEG_RPROC_ADDR  (&rproc[0])
 #define END_RPROC_ADDR  (&rproc[NR_SYS_PROCS])
 
-/* Constants for live update. */
-#define RS_DEFAULT_PREPARE_MAXTIME 2*RS_DELTA_T   /* default prepare max time */
+/* Constants for live update.(实时更新的常量) */
+#define RS_DEFAULT_PREPARE_MAXTIME 2*RS_DELTA_T   /* default prepare(准备) max time(默认最大准备时间) */
 
-/* Definitions for boot info tables. */
-#define NULL_BOOT_NR    NR_BOOT_PROCS        /* marks a null boot entry */
-#define DEFAULT_BOOT_NR NR_BOOT_PROCS        /* marks the default boot entry */
+/* Definitions for boot info tables.(启动信息表的定义) */
+#define NULL_BOOT_NR    NR_BOOT_PROCS        /* marks a null boot entry(标记一个空启动项) */
+#define DEFAULT_BOOT_NR NR_BOOT_PROCS        /* marks the default boot entry(标记默认启动项) */
 
 /* Define sys flags for the various process types. */
 #define SRV_SF   (SF_CORE_SRV)                 /* system services */
-#define SRVR_SF  (SRV_SF | SF_NEED_REPL)       /* services needing a replica */
-#define DSRV_SF  (0)                           /* dynamic system services */
+#define SRVR_SF  (SRV_SF | SF_NEED_REPL)       /* services needing a replica(需要副本的服务) (replica:复制品)*/
+#define DSRV_SF  (0)                           /* dynamic system services(动态系统服务) */
 #define VM_SF    (SRVR_SF)     			/* vm */
 
-/* Shorthands. */
+/* Shorthands.(速记(法)；(对某事)简略的表达方式) */
 #define SRV_OR_USR(rp, X, Y) (rp->r_priv.s_flags & SYS_PROC ? X : Y)
 
 /* Reply flags. */
-#define RS_DONTREPLY    0
-#define RS_REPLY        1
-#define RS_CANCEL       2
+#define RS_DONTREPLY    0    /* don't reply */
+#define RS_REPLY        1   /* reply */
+#define RS_CANCEL       2   /* cancel */
 
 /* Swap flags. */
-#define RS_DONTSWAP     0
-#define RS_SWAP         1
+#define RS_DONTSWAP     0   /* don't swap */
+#define RS_SWAP         1   /* swap */
 
 /* Configuration constants */
 #define RS_VM_DEFAULT_MAP_PREALLOC_LEN  (1024*1024*8)
