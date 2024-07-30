@@ -1,5 +1,5 @@
-/* Global constants(常量) used in RS.
- */
+/* Global constants(常量) used in RS.*/
+
 #ifndef RS_CONST_H
 #define RS_CONST_H
 
@@ -68,7 +68,7 @@
 #define VM_SF    (SRVR_SF)     			/* vm */
 
 /* Shorthands.(速记(法)；(对某事)简略的表达方式) */
-#define SRV_OR_USR(rp, X, Y) (rp->r_priv.s_flags & SYS_PROC ? X : Y)
+#define SRV_OR_USR(rp, X, Y) (rp->r_priv.s_flags & SYS_PROC ? X : Y)      /*位与 AND优先级高于条件运算符*/
 
 /* Reply flags. */
 #define RS_DONTREPLY    0    /* don't reply */
@@ -80,14 +80,14 @@
 #define RS_SWAP         1   /* swap */
 
 /* Configuration constants */
-#define RS_VM_DEFAULT_MAP_PREALLOC_LEN  (1024*1024*8)
-#define RS_USE_PAGING                   0
+#define RS_VM_DEFAULT_MAP_PREALLOC_LEN  (1024*1024*8)    /* default preallocation length for VM mappings(VM映射的默认预分配长度) */
+#define RS_USE_PAGING                   0               //是否使用分页机制
 
-/* Update macros. */
+/* Update macros. */    //实时更新宏
 #define RUPDATE_INIT() memset(&rupdate, 0, sizeof(rupdate))
 #define RUPDATE_CLEAR() RUPDATE_INIT()
 
-/* Note that we have 'B' last in order to allow 'continue' statements */
+/* Note that we have 'B' last in order to allow 'continue' statements */    //注意，我们将'B'放在最后，以允许'continue'语句
 #define RUPDATE_ITER(HEAD, RPUPD_PREV, RPUPD, B) do { \
         for(RPUPD = HEAD, RPUPD_PREV = NULL; RPUPD != NULL; \
           RPUPD_PREV = RPUPD, RPUPD = RPUPD->next_rpupd) { \
@@ -101,6 +101,7 @@
             B \
         } \
      } while(0)
+
 
 #define RUPDATE_IS_UPDATING() (rupdate.flags & RS_UPDATING)
 #define RUPDATE_IS_VM_UPDATING() ((rupdate.flags & RS_UPDATING) && rupdate.vm_rpupd)

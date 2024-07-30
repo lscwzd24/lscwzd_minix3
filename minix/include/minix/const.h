@@ -139,12 +139,12 @@
 #define BOARDVARNAME		"board"
 #define SERBAUDVARNAME		"cttybaud"
 
-/* Bits for s_flags in the privilege structure. */
+/* Bits for s_flags in the privilege structure.(特权结构中的s_flags位) */
 #define PREEMPTIBLE     0x002   /* kernel tasks are not preemptible */
 #define BILLABLE        0x004   /* some processes are not billable */
 #define DYN_PRIV_ID     0x008   /* privilege id assigned dynamically */
  
-#define SYS_PROC        0x010   /* system processes have own priv structure */
+#define SYS_PROC        0x010   /* system processes have own priv structure(系统进程有自己的priv结构) */
 #define CHECK_IO_PORT   0x020   /* check if I/O request is allowed */
 #define CHECK_IRQ       0x040   /* check if IRQ can be used */
 #define CHECK_MEM       0x080   /* check if (VM) mem map request is allowed */
