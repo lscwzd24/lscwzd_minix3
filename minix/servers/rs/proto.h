@@ -1,7 +1,7 @@
-/* Function prototypes. */
+/* Function prototypes.(函数原型) */
 
 /* Structs used in prototypes must be declared as such first. */
-struct rproc;
+struct rproc;		
 struct rprocupd;
 
 /* exec.c */

@@ -94,8 +94,8 @@ void do_sef_lu_before_receive(void)
  *===========================================================================*/
 int do_sef_lu_request(message *m_ptr)
 {
-/* Handle a SEF Live update request. */
-  int r, state, flags, is_valid_state;
+/* Handle a SEF Live update request(处理SEF Live更新请求). */
+  int r, state, flags, is_valid_state;    // valid:合理的
   cp_grant_id_t rs_state_data_gid;
 
   sef_lu_debug_cycle = 0;

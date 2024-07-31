@@ -44,13 +44,13 @@
  */
 #define _ENDPOINT_GENERATION_SHIFT	15
 
-/* Derived constants. */
+/* Derived constants.(导出常数) */
 #define _ENDPOINT_GENERATION_SIZE	(1 << _ENDPOINT_GENERATION_SHIFT)
 /* INT_MAX is used here to prevent signedness issues with the macros below. */
 #define _ENDPOINT_MAX_GENERATION	(INT_MAX/_ENDPOINT_GENERATION_SIZE-1)
 #define _ENDPOINT_SLOT_TOP	(_ENDPOINT_GENERATION_SIZE-MAX_NR_TASKS)
 
-/* The special endpoint numbers, and the resulting maximum slot number. */
+/* The special endpoint numbers, and the resulting maximum slot number.(特殊进程标识符号以及由此产生的最大进程槽编号) */
 #define ANY		((endpoint_t) (_ENDPOINT_SLOT_TOP - 1))
 #define NONE		((endpoint_t) (_ENDPOINT_SLOT_TOP - 2))
 #define SELF		((endpoint_t) (_ENDPOINT_SLOT_TOP - 3))

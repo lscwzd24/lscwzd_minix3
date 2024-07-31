@@ -22,7 +22,7 @@
 void panic(const char *fmt, ...)
 {
   va_list arg;
-  /* The system has run aground of a fatal kernel error. Terminate execution. */
+  /* The system has run aground(搁浅\在地面上) of a fatal kernel error. Terminate execution.(系统因致命的内核错误而搁浅。终止执行) */
   if (kinfo.minix_panicing == ARE_PANICING) {
   	reset();
   }

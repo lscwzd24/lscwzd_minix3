@@ -1,4 +1,4 @@
-/* This file contains some utility routines for RS.
+/* This file contains some utility routines(实用程序) for RS.
  *
  * Changes:
  *   Nov 22, 2009: Created    (Cristiano Giuffrida)
@@ -446,8 +446,8 @@ void rs_idle_period()
   struct rprocpub *rpub;
   int r;
 
-  /* Not much to do when RS is not idle. */
-  /* However, to avoid deadlocks it is absolutely necessary that during system
+  /* Not much to do when RS is not idle.(RS不空闲时没什么可做的) */
+  /* However, to avoid deadlocks it is absolutely(绝对地) necessary that during system
    * shutdown, dead services are actually cleaned up. Override the idle check.
    */
   if(!shutting_down && !rs_is_idle()) {

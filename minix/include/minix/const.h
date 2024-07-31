@@ -38,10 +38,10 @@
 
 #define EXTERN        extern	/* used in *.h files */
 
-#define TRUE               1	/* used for turning integers into Booleans */
+#define TRUE               1	/* used for turning integers into Booleans(用于将整数转换为布尔值) */
 #define FALSE              0	/* used for turning integers into Booleans */
 
-#define SUPER_USER ((uid_t) 0)	/* uid_t of superuser */
+#define SUPER_USER ((uid_t) 0)	/* uid_t of superuser(超级用户) */
 
 #include <sys/null.h>      /* NULL Pointer */
 

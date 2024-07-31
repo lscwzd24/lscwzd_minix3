@@ -20,11 +20,11 @@
 
 struct priv {
   proc_nr_t s_proc_nr;		/* number of associated process */
-  sys_id_t s_id;		/* index of this system structure */
-  short s_flags;		/* PREEMTIBLE, BILLABLE, etc. */
+  sys_id_t s_id;		      /* index of this system structure */
+  short s_flags;		      /* PREEMTIBLE, BILLABLE, etc. */
   int s_init_flags;             /* initialization flags given to the process. */
 
-  /* Asynchronous sends */
+  /* Asynchronous sends(异步发送) */
   vir_bytes s_asyntab;		/* addr. of table in process' address space */
   size_t s_asynsize;		/* number of elements in table. 0 when not in
 				 * use

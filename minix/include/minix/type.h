@@ -19,7 +19,7 @@
 typedef unsigned int vir_clicks; 	/*  virtual addr/length in clicks */
 typedef unsigned long phys_bytes;	/* physical addr/length in bytes */
 typedef unsigned int phys_clicks;	/* physical addr/length in clicks */
-typedef int endpoint_t;			/* process identifier */
+typedef int endpoint_t;			      /* process identifier(进程标识符) */
 typedef int32_t cp_grant_id_t;		/* A grant ID. */
 typedef long unsigned int vir_bytes;	/* virtual addresses/lengths in bytes */
 

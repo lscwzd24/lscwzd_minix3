@@ -2393,6 +2393,7 @@ typedef struct {
 } mess_vmmcp;
 _ASSERT_MSG_SIZE(mess_vmmcp);
 
+
 typedef struct {
 	void *addr;
 	u8_t flags;
@@ -2401,8 +2402,8 @@ typedef struct {
 _ASSERT_MSG_SIZE(mess_vmmcp_reply);
 
 typedef struct noxfer_message {
-	endpoint_t m_source;		/* who sent the message */
-	int m_type;			/* what kind of message is it */
+	endpoint_t m_source;		/* who sent the message(endpoint_t:process identifier(进程标识符)) */
+	int m_type;					/* what kind of message is it */
 	union {
 		mess_u8			m_u8;
 		mess_u16		m_u16;
@@ -2664,14 +2665,14 @@ typedef struct noxfer_message {
 		mess_vfs_lsys_socketpath	m_vfs_lsys_socketpath;
 		mess_vfs_utimens	m_vfs_utimens;
 		mess_vm_vfs_mmap	m_vm_vfs_mmap;
-		mess_vmmcp		m_vmmcp;
+		mess_vmmcp			m_vmmcp;
 		mess_vmmcp_reply	m_vmmcp_reply;
 
-		u8_t size[56];	/* message payload may have 56 bytes at most */
+		u8_t size[56];	/* message payload(有效载荷) may have 56 bytes at most(消息有效载荷最多可以有56个字节) */
 	};
 } message __ALIGNED(16);
 
-/* Ensure the complete union respects the IPC assumptions. */
+/* Ensure(确保) the complete(完整的) union(联合) respects(考虑) the IPC assumptions(假设). */
 typedef int _ASSERT_message[/* CONSTCOND */sizeof(message) == 64 ? 1 : -1];
 
 /* The following defines provide names for useful members. */

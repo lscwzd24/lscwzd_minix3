@@ -1,6 +1,6 @@
-/* Reincarnation Server.  This servers starts new system services and detects
- * they are exiting.   In case of errors, system services can be restarted.  
- * The RS server periodically checks the status of all registered services
+/* Reincarnation Server(再生服务器).  This servers starts new system services and detects(检测)
+ * they are exiting.   In case of errors(如果出现错误), system services can be restarted.  
+ * The RS server periodically(周期性地) checks the status of all registered services
  * services to see whether they are still alive.   The system services are 
  * expected to periodically send a heartbeat message. 
  * 
@@ -14,14 +14,14 @@
 #include "kernel/type.h"
 #include "kernel/proc.h"
 
-/* Declare some local functions. */
+/* Declare some local functions.(声明一些局部函数) */
 static void boot_image_info_lookup( endpoint_t endpoint, struct
 	boot_image *image, struct boot_image **ip, struct boot_image_priv **pp,
 	struct boot_image_sys **sp, struct boot_image_dev **dp);
 static void catch_boot_init_ready(endpoint_t endpoint);
 static void get_work(message *m_ptr, int *status_ptr);
 
-/* SEF functions and variables. */
+/* SEF functions and variables. */ 
 static void sef_local_startup(void);
 static int sef_cb_init_fresh(int type, sef_init_info_t *info);
 static int sef_cb_init_restart(int type, sef_init_info_t *info);
@@ -37,13 +37,13 @@ static int sef_cb_signal_manager(endpoint_t target, int signo);
  *===========================================================================*/
 int main(void)
 {
-/* This is the main routine of this service. The main loop consists of 
+/* This is the main routine of this service(这是这项服务的主要程序). The main loop consists of 
  * three major activities: getting new work, processing the work, and
  * sending the reply. The loop never terminates, unless a panic occurs.
  */
-  message m;					/* request message */
-  int ipc_status;				/* status code */
-  int call_nr, who_e,who_p;			/* call number and caller */
+  message m;					        /* request(请求) message */
+  int ipc_status;				        /* status code */
+  int call_nr, who_e,who_p;			    /* call number and caller */
   int result;                 			/* result to return */
   int s;
 
@@ -55,26 +55,26 @@ int main(void)
 
   /* Main loop - get work and do it, forever. */         
   while (TRUE) {              
-      /* Perform sensitive background operations when RS is idle. */
+      /* Perform sensitive background operations when RS is idle.(在RS空闲时执行敏感的后台操作) */
       rs_idle_period();
 
-      /* Wait for request message. */
+      /* Wait for request(请求) message. */
       get_work(&m, &ipc_status);
       who_e = m.m_source;
       if(rs_isokendpt(who_e, &who_p) != OK) {
           panic("message from bogus source: %d", who_e);
       }
 
-      call_nr = m.m_type;
+      call_nr = m.m_type;       
 
-      /* Now determine what to do.  Four types of requests are expected:
-       * - Heartbeat messages (notifications from registered system services)
-       * - System notifications (synchronous alarm)
+      /* Now determine(决定) what to do.  Four types of requests are expected:
+       * - Heartbeat messages (notifications(通知) from registered(已注册) system services)
+       * - System notifications(系统通知) (synchronous(同步的) alarm)
        * - User requests (control messages to manage system services)
-       * - Ready messages (reply messages from registered services)
+       * - Ready messages(就绪消息) (reply messages from registered services(来自注册服务的回复消息))
        */
 
-      /* Notification messages are control messages and do not need a reply.
+      /* Notification(通知) messages are control messages and do not need a reply.
        * These include heartbeat messages and system notifications.
        */
       if (is_ipc_notify(ipc_status)) {
@@ -82,7 +82,7 @@ int main(void)
           case CLOCK:
 	      do_period(&m);			/* check services status */
 	      continue;
-	  default:				/* heartbeat notification */
+	  default:				        /* heartbeat notification */
 	      if (rproc_ptr[who_p] != NULL) {	/* mark heartbeat time */ 
 		  rproc_ptr[who_p]->r_alive_tm = m.m_notify.timestamp;
 	      } else {
@@ -92,55 +92,57 @@ int main(void)
 	  }
       }
 
-      /* If we get this far, this is a normal request.
-       * Handle the request and send a reply to the caller. 
+      /* If we get this far, this is a normal request.(如果我们走到这一步，这是一个正常的请求)
+       * Handle the request and send a reply to the caller.(处理请求并向呼叫者发送回复) 
        */
       else {
-          /* Handler functions are responsible for permission checking. */
+          /* Handler functions are responsible for permission(许可,批准,准许) checking. */
           switch(call_nr) {
           /* User requests. */
-	  case RS_UP:		result = do_up(&m);		break;
-          case RS_DOWN: 	result = do_down(&m); 		break;
-          case RS_REFRESH: 	result = do_refresh(&m); 	break;
-          case RS_RESTART: 	result = do_restart(&m); 	break;
-          case RS_SHUTDOWN: 	result = do_shutdown(&m); 	break;
-          case RS_UPDATE: 	result = do_update(&m); 	break;
-          case RS_CLONE: 	result = do_clone(&m); 		break;
-	  case RS_UNCLONE: 	result = do_unclone(&m);	break;
-          case RS_EDIT: 	result = do_edit(&m); 		break;
-	  case RS_SYSCTL:	result = do_sysctl(&m);		break;
-	  case RS_FI:	result = do_fi(&m);		break;
-          case RS_GETSYSINFO:  result = do_getsysinfo(&m);     break;
-	  case RS_LOOKUP:	result = do_lookup(&m);		break;
-	  /* Ready messages. */
-	  case RS_INIT: 	result = do_init_ready(&m); 	break;
-	  case RS_LU_PREPARE: 	result = do_upd_ready(&m); 	break;
+	      case RS_UP:		    result = do_up(&m);		        break;
+          case RS_DOWN: 	    result = do_down(&m); 		    break;
+          case RS_REFRESH: 	    result = do_refresh(&m); 	    break;
+          case RS_RESTART: 	    result = do_restart(&m); 	    break;
+          case RS_SHUTDOWN: 	result = do_shutdown(&m); 	    break;
+          case RS_UPDATE: 	    result = do_update(&m); 	    break;
+          case RS_CLONE: 	    result = do_clone(&m); 		    break;
+	      case RS_UNCLONE: 	    result = do_unclone(&m);	    break;
+          case RS_EDIT: 	    result = do_edit(&m); 		    break;
+	      case RS_SYSCTL:	    result = do_sysctl(&m);		    break;
+	      case RS_FI:	        result = do_fi(&m);		        break;
+          case RS_GETSYSINFO:   result = do_getsysinfo(&m);     break;
+	      case RS_LOOKUP:	    result = do_lookup(&m);		    break;
+	      /* Ready messages. */
+	      case RS_INIT: 	    result = do_init_ready(&m); 	break;
+	      case RS_LU_PREPARE: 	result = do_upd_ready(&m); 	    break;
           default: 
               printf("RS: warning: got unexpected request %d from %d\n",
                   m.m_type, m.m_source);
               result = ENOSYS;
           }
 
-          /* Finally send reply message, unless disabled. */
+          /* Finally send reply message, unless disabled.(最后发送回复消息，除非禁用。) */
           if (result != EDONTREPLY) {
-	      m.m_type = result;
+	          m.m_type = result;
               reply(who_e, NULL, &m);
           }
       }
   }
 }
 
+
+
 /*===========================================================================*
  *			       sef_local_startup			     *
  *===========================================================================*/
 static void sef_local_startup()
 {
-  /* Register init callbacks. */
+  /* Register init callbacks(回调). */
   sef_setcb_init_fresh(sef_cb_init_fresh);
   sef_setcb_init_restart(sef_cb_init_restart);
   sef_setcb_init_lu(sef_cb_init_lu);
 
-  /* Register response callbacks. */
+  /* Register response(响应) callbacks. */
   sef_setcb_init_response(sef_cb_init_response);
   sef_setcb_lu_response(sef_cb_lu_response);
 
@@ -651,7 +653,7 @@ static int sef_cb_signal_manager(endpoint_t target, int signo)
   struct rproc *rp;
   message m;
 
-  /* Lookup slot. */
+  /* Lookup(查找) slot. */
   if(rs_isokendpt(target, &target_p) != OK || rproc_ptr[target_p] == NULL) {
       if(rs_verbose)
           printf("RS: ignoring spurious signal %d for process %d\n",
@@ -822,10 +824,15 @@ endpoint_t endpoint;
 
 /*===========================================================================*
  *				get_work                                     *
+ 在C语言中，函数参数的声明可以使用传统的K&R（Kernighan and Ritchie）风格，这种风格在
+ 函数定义时将参数类型声明放在参数列表之后。你所提到的get_work函数的定义就是采用了这种风格。
+
+ 这种风格的函数定义在早期的C语言标准中比较常见，但在现代C语言编程中，更推荐使用ISO C
+ （也称为C89或C90）标准中的函数定义方式，即在函数参数列表中直接声明参数类型。
  *===========================================================================*/
 static void get_work(m_ptr, status_ptr)
-message *m_ptr;				/* pointer to message */
-int *status_ptr;			/* pointer to status */
+message *m_ptr;				                    /* pointer to message */
+int *status_ptr;			                    /* pointer to status */
 {
     int r;
     if (OK != (r=sef_receive_status(ANY, m_ptr, status_ptr)))
