@@ -5,20 +5,20 @@
 
 #include "inc.h"
 
-/* A single error entry. */
+/* A single error entry.(单个错误条目) */
 struct errentry {
     int errnum;
     char* errstr;
 };
 
-/* Initialization errors. */
+/* Initialization(初始化) errors. */
 static struct errentry init_errlist[] = {
   { ENOSYS,     "service does not support the requested initialization type"  },
   { ERESTART,     "service requested an initialization reset"  }
 };
 static const int init_nerr = sizeof(init_errlist) / sizeof(init_errlist[0]);
 
-/* Live update errors. */
+/* Live update errors.(实时更新错误) */
 static struct errentry lu_errlist[] = {
   { ENOSYS,     "service does not support live update"                        },
   { EINVAL,     "service does not support the required state"                 },

@@ -3,22 +3,22 @@
 #ifndef RS_TYPE_H
 #define RS_TYPE_H
 
-/* Definition of an entry of the boot image priv table. */    
+/* Definition of an entry(条目) of the boot image priv table.(引导映像priv表条目的定义。) */    
 struct boot_image_priv {
-  endpoint_t endpoint;         /* process endpoint number */  //进程的端点号
+  endpoint_t endpoint;         /* process endpoint number */    //进程的端点号
   char label[RS_MAX_LABEL_LEN]; /* label to assign to this service */ //给这个服务分配的标签
 
   int flags;                   /* privilege flags */  //特权标志
 };
 
-/* Definition of an entry of the boot image sys table. */
+/* Definition of an entry(条目) of the boot image sys table. */
 struct boot_image_sys {
   endpoint_t endpoint;         /* process endpoint number */
 
   int flags;                   /* system flags */
 };
 
-/* Definition of an entry of the boot image dev table. */
+/* Definition of an entry(条目) of the boot image dev table. */
 struct boot_image_dev {
   endpoint_t endpoint;         /* process endpoint number */
 
@@ -51,7 +51,7 @@ struct rupdate {
   struct rprocupd *rs_rpupd;    /* RS descriptor scheduled for the update */
 };
 
-/* Definition of an entry of the system process table. */   //系统进程表的条目定义
+/* Definition of an entry(条目) of the system process table. */   //系统进程表的条目定义
 typedef struct priv ixfer_priv_s;     // priv是在内核中定义的，这里只是声明一下
 struct rproc {
   struct rprocpub *r_pub;       /* pointer to the corresponding public entry */     //指向相应的公共条目指针
@@ -60,12 +60,12 @@ struct rproc {
   struct rproc *r_prev_rp;      /* pointer to the slot with the prev replica */     //指向前一个副本的槽
   struct rproc *r_next_rp;      /* pointer to the slot with the next replica */     //指向下一个副本的槽
   struct rprocupd r_upd;        /* update descriptor */
-  pid_t r_pid;			/* process id, -1 if the process is not there */
+  pid_t r_pid;			            /* process id, -1 if the process is not there */
 
-  int r_asr_count;		/* number of live updates with ASR */         //有ASR的实时更新数
-  int r_restarts;		/* number of restarts (initially zero) */         //重启次数(初始为零)
-  long r_backoff;		/* number of periods to wait before revive */      //等待恢复的时间
-  unsigned r_flags; 		/* status and policy flags */                 //状态和策略标志  
+  int r_asr_count;		          /* number of live updates with ASR */         //有ASR的实时更新数
+  int r_restarts;		            /* number of restarts (initially zero) */         //重启次数(初始为零)
+  long r_backoff;		            /* number of periods to wait before revive */      //等待恢复的时间
+  unsigned r_flags; 		        /* status and policy flags */                 //状态和策略标志  
   int r_init_err;               /* error code at initialization time */    //初始化时错误代码
 
   long r_period;		    /* heartbeat period (or zero) */             //心跳周期(或零)
@@ -85,12 +85,10 @@ struct rproc {
   char *r_exec;			/* Executable image */ 
   size_t r_exec_len;		/* Length of image */
 
-  ixfer_priv_s r_priv;		/* Privilege structure to be passed to the
-				 * kernel.
-				 */
+  ixfer_priv_s r_priv;		/* Privilege structure to be passed to the kernel.*/
   uid_t r_uid;
   endpoint_t r_scheduler;	/* scheduler */   //调度程序
-  int r_priority;		/* negative values are reserved for special meanings */  //负值是特殊含义
+  int r_priority;		      /* negative values are reserved for special meanings */  //负值是特殊含义
   int r_quantum;
   int r_cpu;
   vir_bytes r_map_prealloc_addr; /* preallocated mmap address */    //预先分配的mmap地址

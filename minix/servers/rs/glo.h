@@ -10,10 +10,10 @@
 
 #include <minix/param.h>
 
-/* The boot image priv table. This table has entries for all system
+/* The boot image priv table. This table has entries(条目) for all system
  * services in the boot image.
  */
-extern struct boot_image_priv boot_image_priv_table[];
+extern struct boot_image_priv boot_image_priv_table[];      // 数组声明boot_image_priv_table[]
 
 /* The boot image sys table. This table has entries for system services in
  * the boot image that override default sys properties.

@@ -1,0 +1,3 @@
+# beagleboard-xm
+U_BOOT_BIN_DIR=build/omap3_beagle/
+CONSOLE=tty02

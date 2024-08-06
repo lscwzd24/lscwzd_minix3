@@ -2,7 +2,7 @@
 #define _MINIX_SYS_CONFIG_H 1
 
 /*===========================================================================*
- *		This section contains user-settable parameters		     *
+ *		This section contains user-settable(可设置的) parameters		     *
  *===========================================================================*/
 
 #define _NR_PROCS	256

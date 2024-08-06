@@ -25,7 +25,7 @@ int init_service(struct rproc *rp, int type, int flags)
   rp->r_alive_tm = getticks();
   rp->r_check_tm = rp->r_alive_tm + 1;         /* expect reply within period */
 
-  /* In case of RS initialization, we are done. */
+  /* In case of(如果发生……) RS initialization, we are done. */
   if(rp->r_priv.s_flags & ROOT_SYS_PROC) {
       return OK;
   }
@@ -81,7 +81,7 @@ int fi_service(struct rproc *rp)
  *===========================================================================*/
 void fill_send_mask(send_mask, set_bits)
 sys_map_t *send_mask;		/* the send mask to fill in */
-int set_bits;			/* TRUE sets all bits, FALSE clears all bits */
+int set_bits;			    /* TRUE sets all bits, FALSE clears all bits */
 {
 /* Fill in a send mask. */
   int i;
@@ -434,6 +434,7 @@ int rs_is_idle()
           return 0;
       }
   }
+
   return 1;
 }
 
@@ -448,9 +449,9 @@ void rs_idle_period()
 
   /* Not much to do when RS is not idle.(RS不空闲时没什么可做的) */
   /* However, to avoid deadlocks it is absolutely(绝对地) necessary that during system
-   * shutdown, dead services are actually cleaned up. Override the idle check.
+   * shutdown, dead services are actually cleaned up. Override(取消/否决/重写) the idle check.
    */
-  if(!shutting_down && !rs_is_idle()) {
+  if(!shutting_down && !rs_is_idle()) {     
       return;
   }
 

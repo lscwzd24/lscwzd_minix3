@@ -67,7 +67,7 @@ message *m_ptr;					/* request message pointer */
       return r;
   }
 
-  /* Check for duplicates */
+  /* Check for duplicates(副本；复制品) */
   if(lookup_slot_by_label(rpub->label)) {
       printf("RS: service with the same label '%s' already exists\n",
           rpub->label);

@@ -1,4 +1,4 @@
-/* This file contains the definition of the boot image info tables.
+/* This file contains the definition of the boot image(引导映像) info tables.
  *
  * Changes:
  *   Nov 22, 2009: Created  (Cristiano Giuffrida)
@@ -8,7 +8,7 @@
 
 #include "inc.h"
 
-/* Definition of the boot image priv table. The order of entries in this table
+/* Definition of the boot(启动) image priv table. The order(秩序) of entries in this table
  * reflects the order boot system services are made runnable and initialized
  * at boot time.
  */

@@ -76,14 +76,14 @@ struct rproc *target_rp;
 }
 
 /*===========================================================================*
- *			     check_call_permission			     *
+ *			     check_call_permission(许可)			     *
  *===========================================================================*/
 int check_call_permission(caller, call, rp)
 endpoint_t caller;
 int call;
 struct rproc *rp;
 {
-/* Check if the caller has permission to execute a particular call. */
+/* Check if the caller has permission to execute a particular(特指的) call. */
   struct rprocpub *rpub;
   int call_allowed;
 
@@ -1028,11 +1028,11 @@ void activate_service(struct rproc *rp, struct rproc *ex_rp)
 }
 
 /*===========================================================================*
- *			      reincarnate_service			     *
+ *			      reincarnate_service	(reincarnate:使再生)		     *
  *===========================================================================*/
 void reincarnate_service(struct rproc *old_rp)
 {
-/* Restart a service as if it were never started before. */
+/* Restart a service as if((强调某物不是真的)好像…一样,仿佛,似乎 it were never started before. */
   struct rproc *rp;
   int r, restarts;
 
@@ -1054,7 +1054,7 @@ void reincarnate_service(struct rproc *old_rp)
  *===========================================================================*/
 void terminate_service(struct rproc *rp)
 {
-/* Handle a termination event for a system service. */
+/* Handle a termination event for a system service.(处理系统服务的终止事件) */
   struct rproc **rps;
   struct rprocpub *rpub;
   int nr_rps, norestart;
@@ -1298,7 +1298,7 @@ void restart_service(struct rproc *rp)
 }
 
 /*===========================================================================*
- *		         inherit_service_defaults			     *
+ *		         inherit(继承)_service_defaults			     *
  *===========================================================================*/
 void inherit_service_defaults(def_rp, rp)
 struct rproc *def_rp;
@@ -1336,7 +1336,7 @@ struct rproc *rp;
 struct rproc ***rps;
 int *length;
 {
-/* Retrieve all the service instances of a given service. */
+/* Retrieve(检索) all the service instances of a given service. */
   static struct rproc *instances[5];
   int nr_instances;
 
@@ -2225,7 +2225,7 @@ struct priv *privp;
 
 
 /*===========================================================================*
- *				add_backward_ipc			     *
+ *				add_backward(向后的)_ipc			     *
  *===========================================================================*/
 void add_backward_ipc(rp, privp)
 struct rproc *rp;

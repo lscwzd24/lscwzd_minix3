@@ -13,7 +13,7 @@ Interface to the reincarnation server
 
 #define SERVICE_LOGIN	"service"	/* passwd file entry for services */
 
-/* The following definition should be kept in sync with the actual
+/* The following definition should be kept in sync(同步) with the actual
  * /etc/master.passwd value for SERVICE_LOGIN for now, and removed altogether
  * once we are able to obtain its value dynamically everywhere.  The value has
  * been chosen so as to avoid creating conflicts with future NetBSD additions
@@ -150,6 +150,11 @@ struct rs_start
 	int rss_cpu;
 };
 
+/*
+ACL（Access Control List，访问控制列表）是一种用于管理资源访问权限的机制。
+在计算机系统中，ACL用于定义哪些用户或进程可以访问特定的资源（如文件、设备、网络端口等），
+以及他们可以执行哪些操作（如读、写、执行等）。
+*/
 /* ACL information for access to PCI devices */
 struct rs_pci
 {
@@ -163,14 +168,14 @@ struct rs_pci
 
 /* Definition of a public entry of the system process table. */
 struct rprocpub {
-  short in_use; 		  /* set when the entry is in use */
+  short in_use; 		  		/* set when the entry is in use */
   unsigned sys_flags; 		  /* sys flags */
   endpoint_t endpoint;		  /* process endpoint number */
   endpoint_t old_endpoint;	  /* old instance endpoint number (for VM, when updating) */
   endpoint_t new_endpoint;	  /* new instance endpoint number (for VM, when updating) */
 
   devmajor_t dev_nr;		  /* major device number or NO_DEV */
-  int nr_domain;		  /* number of socket driver domains */
+  int nr_domain;		  /* number of socket driver domains(域；(知识、活动的)领域) */
   int domain[NR_DOMAIN];	  /* set of socket driver domains */
 
   char label[RS_MAX_LABEL_LEN];	  /* label of this service */

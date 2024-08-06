@@ -21,11 +21,11 @@ static void boot_image_info_lookup( endpoint_t endpoint, struct
 static void catch_boot_init_ready(endpoint_t endpoint);
 static void get_work(message *m_ptr, int *status_ptr);
 
-/* SEF functions and variables. */ 
+/* SEF(System Event Framework) functions and variables. */ 
 static void sef_local_startup(void);
 static int sef_cb_init_fresh(int type, sef_init_info_t *info);
 static int sef_cb_init_restart(int type, sef_init_info_t *info);
-static int sef_cb_init_lu(int type, sef_init_info_t *info);
+static int sef_cb_init_lu(int type, sef_init_info_t *info);         // lu：live update
 static int sef_cb_init_response(message *m_ptr);
 static int sef_cb_lu_response(message *m_ptr);
 static void sef_cb_signal_handler(int signo);
@@ -47,10 +47,10 @@ int main(void)
   int result;                 			/* result to return */
   int s;
 
-  /* SEF local startup. */
+  /* SEF local startup.(初始化，注册各种回调函数) */
   sef_local_startup();
   
-  if (OK != (s=sys_getmachine(&machine)))
+  if (OK != (s=sys_getmachine(&machine)))           // Copy system information.
 	  panic("couldn't get machine info: %d", s);
 
   /* Main loop - get work and do it, forever. */         

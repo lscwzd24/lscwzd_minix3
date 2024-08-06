@@ -7,6 +7,7 @@
 #include <minix/sysutil.h>
 
 #include "syslib.h"
+
 /* SEF Init callbacks. */
 static struct sef_init_cbs {
     sef_cb_init_t                       sef_cb_init_fresh;

@@ -4,13 +4,17 @@
 #include <libexec.h>
 #include <machine/vmparam.h>
 
+
 static int do_exec(int proc_e, char *exec, size_t exec_len, char *progname,
 	char *frame, int frame_len, vir_bytes ps_str);
+
 static int exec_restart(int proc_e, int result, vir_bytes pc, vir_bytes ps_str);
+
 static int read_seg(struct exec_info *execi, off_t off,
         vir_bytes seg_addr, size_t seg_bytes);
 
-/* Array of loaders for different object formats */
+/* Array of loaders for different object formats(用于不同对象格式的加载器数组) */
+/*定义了一个名为exec_loaders的静态常量数组，用于存储可执行文件加载器的函数指针。*/
 static struct exec_loaders {
 	libexec_exec_loadfunc_t load_object;
 } const exec_loaders[] = {
@@ -21,26 +25,26 @@ static struct exec_loaders {
 int srv_execve(int proc_e, char *exec, size_t exec_len, char *progname,
 	char **argv, char **envp)
 {
-	size_t frame_size = 0;	/* Size of the new initial stack. */
-	int argc = 0;		/* Argument count. */
-	int envc = 0;		/* Environment count */
-	char overflow = 0;	/* No overflow yet. */
+	size_t frame_size = 0;	/* Size of the new initial stack. */  //初始化栈的大小
+	int argc = 0;		/* Argument count. */				//参数计数
+	int envc = 0;		/* Environment count */			//环境变量计数
+	char overflow = 0;	/* No overflow yet. */			//尚未发生溢出
 	char *frame;
 	struct ps_strings *psp;
-	int vsp = 0;	/* (virtual) Stack pointer in new address space. */
+	int vsp = 0;	/* (virtual) Stack pointer in new address space. */	//新地址空间中的虚拟栈指针
 
 	int r;
 
 	minix_stack_params(argv[0], argv, envp, &frame_size, &overflow,
 		&argc, &envc);
 
-	/* The party is off if there is an overflow. */
+	/* The party is off if there is an overflow. */ 	//如果发生溢出，则party结束
 	if (overflow) {
 		errno = E2BIG;
 		return -1;
 	}
 
-	/* Allocate space for the stack frame. */
+	/* Allocate space for the stack frame. */		//为栈帧分配空间
 	if ((frame = (char *) sbrk(frame_size)) == (char *) -1) {
 		errno = E2BIG;
 		return -1;
@@ -60,7 +64,7 @@ int srv_execve(int proc_e, char *exec, size_t exec_len, char *progname,
 
 
 static int do_exec(int proc_e, char *exec, size_t exec_len, char *progname,
-	char *frame, int frame_len, vir_bytes ps_str)
+					char *frame, int frame_len, vir_bytes ps_str)
 {
 	int r;
 	vir_bytes vsp;
@@ -98,11 +102,11 @@ static int do_exec(int proc_e, char *exec, size_t exec_len, char *progname,
 	    return r;
 	}
 
-	/* Inform PM */
+	/* Inform(通知) PM */
         if((r = libexec_pm_newexec(execi.proc_e, &execi)) != OK)
 		return r;
 
-	/* Patch up stack and copy it from RS to new core image. */
+	/* Patch up(修补) stack and copy it from RS to new core image. */
 	vsp = execi.stack_high - frame_len;
 	r = sys_datacopy(SELF, (vir_bytes) frame,
 		proc_e, (vir_bytes) vsp, (phys_bytes)frame_len);
@@ -141,10 +145,10 @@ static int exec_restart(int proc_e, int result, vir_bytes pc, vir_bytes ps_str)
  *                             read_seg                                     *
  *===========================================================================*/
 static int read_seg(
-struct exec_info *execi,       /* various data needed for exec */
-off_t off,                     /* offset in file */
-vir_bytes seg_addr,            /* address to load segment */
-size_t seg_bytes           /* how much is to be transferred? */
+					struct exec_info *execi,       /* various(各种各样的) data needed for exec */
+					off_t off,                     /* offset in file */
+					vir_bytes seg_addr,            /* address to load segment */
+					size_t seg_bytes           	   /* how much is to be transferred(转移)? */
 )
 {
 /*

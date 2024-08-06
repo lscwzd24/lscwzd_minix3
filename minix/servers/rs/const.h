@@ -65,7 +65,7 @@
 #define SRV_SF   (SF_CORE_SRV)                 /* system services */
 #define SRVR_SF  (SRV_SF | SF_NEED_REPL)       /* services needing a replica(需要副本的服务) (replica:复制品)*/
 #define DSRV_SF  (0)                           /* dynamic system services(动态系统服务) */
-#define VM_SF    (SRVR_SF)     			/* vm */
+#define VM_SF    (SRVR_SF)     			           /* vm */
 
 /* Shorthands.(速记(法)；(对某事)简略的表达方式) */
 #define SRV_OR_USR(rp, X, Y) (rp->r_priv.s_flags & SYS_PROC ? X : Y)      /*位与 AND优先级高于条件运算符*/

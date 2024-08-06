@@ -2402,7 +2402,7 @@ typedef struct {
 _ASSERT_MSG_SIZE(mess_vmmcp_reply);
 
 typedef struct noxfer_message {
-	endpoint_t m_source;		/* who sent the message(endpoint_t:process identifier(进程标识符)) */
+	endpoint_t m_source;		/* who sent the message*/
 	int m_type;					/* what kind of message is it */
 	union {
 		mess_u8			m_u8;

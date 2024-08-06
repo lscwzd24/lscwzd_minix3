@@ -1,4 +1,4 @@
-/* Header file for the system service manager server. 
+/* Header file for the system service manager server(服务器/侍者). 
  *
  * Created:
  *    Jul 22, 2005	by Jorrit N. Herder 
