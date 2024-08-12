@@ -1,8 +1,8 @@
-/* This file defines constants for use in message communication (mostly)
+/* This file defines constants(常数) for use in message communication (mostly)
  * between system processes.
  *
- * A number of protocol message request and response types are defined. For
- * debugging purposes, each protocol is assigned its own unique number range.
+ * A number of(一些) protocol message request and response types are defined. For
+ * debugging purposes(目的), each protocol is assigned its own unique number range.
  * The following such message type ranges have been allocated:
  *
  *     0x00 -   0xFF	Process Manager (PM) requests (see callnr.h)
@@ -81,9 +81,9 @@
  *                	   Kernel notification types                         *
  *===========================================================================*/
 
-/* Kernel notification types. In principle, these can be sent to any process,
- * so make sure that these types do not interfere with other message types.
- * Notifications are prioritized because of the way they are unhold() and
+/* Kernel notification types. In principle(原则上), these can be sent to any process,
+ * so make sure that these types do not interfere(干涉) with other message types.
+ * Notifications are prioritized(优先处理) because of the way they are unhold() and
  * blocking notifications are delivered. The lowest numbers go first. The
  * offset are used for the per-process notification bit maps. 
  */

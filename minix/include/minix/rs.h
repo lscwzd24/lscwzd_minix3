@@ -21,8 +21,8 @@ Interface to the reincarnation server
  */
 #define SERVICE_UID		999		/* user ID for services */
 
-/* RSS definitions. */
-#define RSS_NR_IRQ		16
+/* RSS definitions. */			// reincarnation server service definitions
+#define RSS_NR_IRQ		16		// IRQ：interrupt request(中断请求)
 #define RSS_NR_IO		16
 #define RSS_IRQ_ALL		(RSS_NR_IRQ+1)
 #define RSS_IO_ALL		(RSS_NR_IO+1)
@@ -31,29 +31,29 @@ Interface to the reincarnation server
 
 /* RSS flags. */
 #define RSS_COPY	0x01	/* keep an in-memory copy of the binary */
-#define RSS_REUSE	0x04	/* Try to reuse previously copied binary */
-#define RSS_NOBLOCK	0x08	/* unblock caller immediately */
+#define RSS_REUSE	0x04	/* Try to reuse(重新使用) previously copied binary */
+#define RSS_NOBLOCK	0x08	/* unblock(非阻塞) caller immediately */
 #define RSS_REPLICA	0x10	/* keep a replica of the service */
 #define RSS_BATCH	0x20	/* batch mode */
 #define RSS_SELF_LU	0x40	/* perform self update */
 #define RSS_ASR_LU	0x80	/* perform ASR update */
 #define RSS_FORCE_SELF_LU	0x0100	/* force self update */
 #define RSS_PREPARE_ONLY_LU	0x0200	/* request prepare-only update */
-#define RSS_FORCE_INIT_CRASH    0x0400  /* force crash at initialization time (for debugging) */
+#define RSS_FORCE_INIT_CRASH    0x0400  /* force crash(崩溃) at initialization time (for debugging) */
 #define RSS_FORCE_INIT_FAIL     0x0800  /* force failure at initialization time (for debugging) */
 #define RSS_FORCE_INIT_TIMEOUT  0x1000  /* force timeout at initialization time (for debugging) */
 #define RSS_FORCE_INIT_DEFCB    0x2000  /* force default cb at initialization time (for debugging) */
-#define RSS_SYS_BASIC_CALLS	0x4000	/* include basic kernel calls */
-#define RSS_VM_BASIC_CALLS	0x8000	/* include basic vm calls */
-#define RSS_NOMMAP_LU          0x10000  /* don't inherit mmapped regions */
-#define RSS_DETACH             0x20000  /* detach on update/restart */
+#define RSS_SYS_BASIC_CALLS		0x4000	/* include basic kernel calls */
+#define RSS_VM_BASIC_CALLS		0x8000	/* include basic vm calls */
+#define RSS_NOMMAP_LU          0x10000  /* don't inherit mmapped regions(继承映射区域) */
+#define RSS_DETACH             0x20000  /* detach(分离) on update/restart */
 #define RSS_NORESTART          0x40000  /* don't restart */
 #define RSS_FORCE_INIT_ST      0x80000  /* force state transfer at initialization time */
-#define RSS_NO_BIN_EXP        0x100000  /* suppress binary exponential offset */
+#define RSS_NO_BIN_EXP        0x100000  /* suppress(抑制) binary exponential(指数的；幂的) offset */
 
 /* Common definitions. */
-#define RS_NR_CONTROL		 8
-#define RS_NR_PCI_DEVICE	32
+#define RS_NR_CONTROL		 8	
+#define RS_NR_PCI_DEVICE	32	
 #define RS_NR_PCI_CLASS		 4
 #define RS_MAX_LABEL_LEN	16
 #define RS_MAX_IPCF_STR_LEN	 (RS_MAX_LABEL_LEN+12)
@@ -61,9 +61,9 @@ Interface to the reincarnation server
 
 /* CPU special values */
 #define RS_CPU_DEFAULT		-1 /* use the default cpu or do not change the current one */
-#define RS_CPU_BSP		-2 /* use the bootstrap cpu */
+#define RS_CPU_BSP		-2 /* use the bootstrap(引导) cpu */	
 
-/* Labels are copied over separately. */
+/* Labels are copied over separately.(标签是单独复制的) */
 struct rss_label
 {
 	char *l_addr;
@@ -109,7 +109,7 @@ struct rs_start
 	uid_t rss_uid;
 	endpoint_t rss_sigmgr;
 	endpoint_t rss_scheduler;
-	int rss_priority;
+	int rss_priority;				// priority:优先
 	int rss_quantum;
 	int rss_major;
 	long rss_period;
@@ -166,17 +166,17 @@ struct rs_pci
 	struct rs_pci_class rsp_class[RS_NR_PCI_CLASS];
 };
 
-/* Definition of a public entry of the system process table. */
-struct rprocpub {
+/* Definition of a public entry(公共条目) of the system process table. */
+struct rprocpub {			
   short in_use; 		  		/* set when the entry is in use */
-  unsigned sys_flags; 		  /* sys flags */
-  endpoint_t endpoint;		  /* process endpoint number */
-  endpoint_t old_endpoint;	  /* old instance endpoint number (for VM, when updating) */
-  endpoint_t new_endpoint;	  /* new instance endpoint number (for VM, when updating) */
+  unsigned sys_flags; 		  	/* sys flags */
+  endpoint_t endpoint;		  	/* process endpoint number */
+  endpoint_t old_endpoint;	  	/* old instance endpoint number (for VM, when updating) */
+  endpoint_t new_endpoint;	  	/* new instance endpoint number (for VM, when updating) */
 
-  devmajor_t dev_nr;		  /* major device number or NO_DEV */
-  int nr_domain;		  /* number of socket driver domains(域；(知识、活动的)领域) */
-  int domain[NR_DOMAIN];	  /* set of socket driver domains */
+  devmajor_t dev_nr;		 	/* major device number or NO_DEV */
+  int nr_domain;		  		/* number of socket driver domains(域；(知识、活动的)领域) */
+  int domain[NR_DOMAIN];	  	/* set of socket driver domains */
 
   char label[RS_MAX_LABEL_LEN];	  /* label of this service */
   char proc_name[RS_MAX_LABEL_LEN]; /* process name of this service */
@@ -188,13 +188,13 @@ struct rprocpub {
 };
 
 /* Return whether the given boot process is a user process, as opposed to a
- * system process. Only usable by core services during SEF initialization.
+ * system process. Only usable(可用的) by core services during SEF initialization.
  */
 #define IS_RPUB_BOOT_USR(rpub) ((rpub)->endpoint == INIT_PROC_NR)
 
 /* Sys flag values. */
 #define SF_CORE_SRV     0x001    /* set for core system services */
-#define SF_SYNCH_BOOT   0X002    /* set when process needs synch boot init */
+#define SF_SYNCH_BOOT   0X002    /* set when process needs synch(同时，同步) boot init */
 #define SF_NEED_COPY    0x004    /* set when process needs copy to start */
 #define SF_USE_COPY     0x008    /* set when process has a copy in memory */
 #define SF_NEED_REPL    0x010    /* set when process needs replica to start */
@@ -208,7 +208,7 @@ struct rprocpub {
 #define SF_NO_BIN_EXP  0x1000    /* set when we should ignore binary exp. offset */
 
 #define IMM_SF          \
-    (SF_NO_BIN_EXP | SF_CORE_SRV | SF_SYNCH_BOOT | SF_NEED_COPY | SF_NEED_REPL) /* immutable */
+    (SF_NO_BIN_EXP | SF_CORE_SRV | SF_SYNCH_BOOT | SF_NEED_COPY | SF_NEED_REPL) /* immutable(不可变的) */
 
 int minix_rs_lookup(const char *name, endpoint_t *value);
 

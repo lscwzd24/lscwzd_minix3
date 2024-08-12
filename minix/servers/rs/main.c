@@ -15,7 +15,7 @@
 #include "kernel/proc.h"
 
 /* Declare some local functions.(声明一些局部函数) */
-static void boot_image_info_lookup( endpoint_t endpoint, struct
+static void boot_image_info_lookup( endpoint_t endpoint, struct             // lookup:查找
 	boot_image *image, struct boot_image **ip, struct boot_image_priv **pp,
 	struct boot_image_sys **sp, struct boot_image_dev **dp);
 static void catch_boot_init_ready(endpoint_t endpoint);
@@ -61,7 +61,7 @@ int main(void)
       /* Wait for request(请求) message. */
       get_work(&m, &ipc_status);
       who_e = m.m_source;
-      if(rs_isokendpt(who_e, &who_p) != OK) {
+      if(rs_isokendpt(who_e, &who_p) != OK) {      // Check if the source is valid.who_p:进程号
           panic("message from bogus source: %d", who_e);
       }
 
@@ -78,7 +78,7 @@ int main(void)
        * These include heartbeat messages and system notifications.
        */
       if (is_ipc_notify(ipc_status)) {
-          switch (who_p) {
+          switch (who_p) {          // who_p:进程号
           case CLOCK:
 	      do_period(&m);			/* check services status */
 	      continue;
@@ -786,7 +786,7 @@ struct boot_image_dev **dp;
 static void catch_boot_init_ready(endpoint)
 endpoint_t endpoint;
 {
-/* Block and catch an init ready message from the given source. */
+/* Block(阻塞) and catch an init ready message from the given source. */
   int r;
   int ipc_status;
   message m;

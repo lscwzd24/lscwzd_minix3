@@ -27,7 +27,7 @@ int sef_munmap(void *addrstart, vir_bytes len, int type);
 /*===========================================================================*
  *				  SEF Init				     *
  *===========================================================================*/
-/* What to intercept. */
+/* What to intercept(拦截). */
 #define INTERCEPT_SEF_INIT_REQUESTS 1
 #define SEF_INIT_REQUEST_TYPE RS_INIT
 #define IS_SEF_INIT_REQUEST(mp, status) ((mp)->m_type == RS_INIT \
@@ -56,13 +56,13 @@ typedef struct {
 typedef int(*sef_cb_init_t)(int type, sef_init_info_t *info);
 typedef int(*sef_cb_init_response_t)(message *m_ptr);
 
-/* Callback registration helpers. */
+/* Callback registration(注册) helpers. */
 void sef_setcb_init_fresh(sef_cb_init_t cb);
 void sef_setcb_init_lu(sef_cb_init_t cb);
 void sef_setcb_init_restart(sef_cb_init_t cb);
 void sef_setcb_init_response(sef_cb_init_response_t cb);
 
-/* Predefined callback implementations. */
+/* Predefined(预定义) callback implementations. */
 int sef_cb_init_null(int type, sef_init_info_t *info);
 int sef_cb_init_response_null(message *m_ptr);
 
@@ -77,7 +77,7 @@ int sef_cb_init_lu_generic(int type, sef_init_info_t *info);
 int sef_cb_init_response_rs_reply(message *m_ptr);
 int sef_cb_init_response_rs_asyn_once(message *m_ptr);
 
-/* Macros for predefined callback implementations. */
+/* Macros(宏) for predefined callback implementations. */
 #define SEF_CB_INIT_FRESH_NULL          sef_cb_init_null
 #define SEF_CB_INIT_LU_NULL             sef_cb_init_null
 #define SEF_CB_INIT_RESTART_NULL        sef_cb_init_null

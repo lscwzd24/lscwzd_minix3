@@ -348,14 +348,18 @@ int code;					/* status code */
 
 /*===========================================================================*
  *				rs_isokendpt			 	     *
+ rs_isokendpt函数用于验证给定的端点（endpoint）是否有效。
+ 具体来说，该函数检查端点是否在有效的进程范围内。
+    endpoint_t endpoint：要验证的端点。
+    int *proc：一个指向整数的指针，用于存储从端点提取的进程号。
  *===========================================================================*/
 int rs_isokendpt(endpoint_t endpoint, int *proc)
 {
-	*proc = _ENDPOINT_P(endpoint);
-	if(*proc < -NR_TASKS || *proc >= NR_PROCS)
+	*proc = _ENDPOINT_P(endpoint);              // 提取进程号
+	if(*proc < -NR_TASKS || *proc >= NR_PROCS)  // 检查提取的进程号是否在有效范围内。
 		return EINVAL;
 
-	return OK;
+	return OK; // 如果进程号在有效范围内，则返回OK，表示端点有效
 }
 
 /*===========================================================================*
