@@ -32,7 +32,7 @@ extern struct boot_image_dev boot_image_dev_table[];
  */
 EXTERN struct rprocpub rprocpub[NR_SYS_PROCS];  /* public entries */
 EXTERN struct rproc rproc[NR_SYS_PROCS];
-EXTERN struct rproc *rproc_ptr[NR_PROCS];       /* mapping for fast access */
+EXTERN struct rproc *rproc_ptr[NR_PROCS];       /* mapping for fast access(快速访问映射) */
 
 /* Global init descriptor. This descriptor holds data to initialize system
  * services.

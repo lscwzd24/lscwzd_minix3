@@ -6,12 +6,12 @@
 /* Definition of an entry(条目) of the boot image priv table.(引导映像priv表条目的定义。) */    
 struct boot_image_priv {
   endpoint_t endpoint;         /* process endpoint number */    //进程的端点号
-  char label[RS_MAX_LABEL_LEN]; /* label to assign to this service */ //给这个服务分配的标签
+  char label[RS_MAX_LABEL_LEN]; /* label to assign to(分配给) this service */ //给这个服务分配的标签
 
-  int flags;                   /* privilege flags */  //特权标志
+  int flags;                   /* privilege(特权) flags */  //特权标志
 };
 
-/* Definition of an entry(条目) of the boot image sys table. */
+/* Definition of an entry(条目) of the boot(引导) image sys table. */
 struct boot_image_sys {
   endpoint_t endpoint;         /* process endpoint number */
 
@@ -31,7 +31,7 @@ struct rprocupd {
   int lu_flags;		                    /* user-specified live update flags */      //用户指定的实时更新标志
   int init_flags;		                  /* user-specified init flags */             //用户指定的初始化标志
   int prepare_state;                  /* the state the process has to prepare for the update */
-  endpoint_t state_endpoint;          /* the custom process to transfer the state from (if any). */ 
+  endpoint_t state_endpoint;          /* the custom(用户) process to transfer the state from (if any). */ 
   clock_t prepare_tm;                 /* timestamp of when the update was scheduled */    //更新计划的时间戳
   clock_t prepare_maxtime;            /* max time to wait for the process to be ready */  //等待进程准备的时间
   struct rproc *rp;                   /* the process under update */                      //正在更新的进程
@@ -41,9 +41,9 @@ struct rprocupd {
   struct rprocupd *next_rpupd;   /* the next process under update */        //下一个正在更新的进程
 };
 struct rupdate {
-  int flags;               /* flags to keep track of the status of the update */  //跟踪更新状态的标志
+  int flags;               /* flags to keep track(跟踪) of the status of the update */  //跟踪更新状态的标志
   int num_rpupds;          /* number of descriptors scheduled for the update */   //计划更新的描述符数
-  int num_init_ready_pending;   /* number of pending init ready messages */       //等待初始化就绪的消息数
+  int num_init_ready_pending;   /* number of pending(等待) init ready messages */       //等待初始化就绪的消息数
   struct rprocupd *curr_rpupd;  /* the current descriptor under update */         //当前正在更新的描述符
   struct rprocupd *first_rpupd; /* first descriptor scheduled for the update */   //计划更新的第一个描述符
   struct rprocupd *last_rpupd;  /* last descriptor scheduled for the update */
@@ -51,7 +51,7 @@ struct rupdate {
   struct rprocupd *rs_rpupd;    /* RS descriptor scheduled for the update */
 };
 
-/* Definition of an entry(条目) of the system process table. */   //系统进程表的条目定义
+/* Definition of an entry(条目) of the system process table(系统进程表). */   //系统进程表的条目定义
 typedef struct priv ixfer_priv_s;     // priv是在内核中定义的，这里只是声明一下
 struct rproc {
   struct rprocpub *r_pub;       /* pointer to the corresponding(相应的) public entry */     //指向相应的公共条目指针
@@ -64,7 +64,7 @@ struct rproc {
 
   int r_asr_count;		          /* number of live updates with ASR */               //有ASR的实时更新数
   int r_restarts;		            /* number of restarts (initially zero) */           //重启次数(初始为零)
-  long r_backoff;		            /* number of periods to wait before revive */       //等待恢复的时间
+  long r_backoff;		            /* number of periods(周期) to wait before revive */       //等待恢复的时间
   unsigned r_flags; 		        /* status and policy flags */                       //状态和策略标志  
   int r_init_err;               /* error code at initialization time */             //初始化时错误代码
 
@@ -85,7 +85,7 @@ struct rproc {
   char *r_exec;			        /* Executable image */ 
   size_t r_exec_len;		    /* Length of image */
 
-  ixfer_priv_s r_priv;		/* Privilege structure to be passed to the kernel.*/
+  ixfer_priv_s r_priv;		/* Privilege(特权) structure to be passed to the kernel.*/
   uid_t r_uid;
   endpoint_t r_scheduler;	/* scheduler */   //调度程序
   int r_priority;		      /* negative values are reserved for special meanings */  //负值是特殊含义

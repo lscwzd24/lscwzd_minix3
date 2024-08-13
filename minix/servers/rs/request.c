@@ -11,6 +11,7 @@ static int check_request(struct rs_start *rs_start);
 
 /*===========================================================================*
  *				   do_up				     *
+ 
  *===========================================================================*/
 int do_up(m_ptr)
 message *m_ptr;					/* request message pointer */

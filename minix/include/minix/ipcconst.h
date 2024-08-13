@@ -3,14 +3,14 @@
 
 #include <machine/ipcconst.h>
 
- /* System call numbers that are passed when trapping to the kernel. */
-#define SEND		   1	/* blocking send */
+ /* System call numbers that are passed when trapping to the kernel(在捕获内核时传递的系统调用号). */
+#define SEND		   1	/* blocking send(阻塞发送) */
 #define RECEIVE		   2	/* blocking receive */
 #define SENDREC	 	   3  	/* SEND + RECEIVE */
-#define NOTIFY		   4	/* asynchronous notify */
+#define NOTIFY		   4	/* asynchronous(异步的) notify(通知) */
 #define SENDNB             5    /* nonblocking send */
 #define MINIX_KERNINFO     6    /* request kernel info structure */
-#define SENDA		   16	/* asynchronous send */
+#define SENDA		   16	/* asynchronous(异步的) send */
 #define IPCNO_HIGHEST	SENDA
 /* Check that the message payload type doesn't grow past the maximum IPC payload size.
  * This is a compile time check. */

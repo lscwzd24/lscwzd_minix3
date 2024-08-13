@@ -8,6 +8,14 @@
  *   Nov 22, 2009: rewrite of boot process (Cristiano Giuffrida)
  *   Jul 22, 2005: Created  (Jorrit N. Herder)
  */
+
+/********************************************************************************************
+ * Fitten code explaintation(解释):
+ * 功能：
+ * 参数：
+ * 总结：
+********************************************************************************************/
+
 #include "inc.h"
 #include <fcntl.h>
 #include "kernel/const.h"
@@ -15,10 +23,52 @@
 #include "kernel/proc.h"
 
 /* Declare some local functions.(声明一些局部函数) */
+
+/********************************************************************************************
+ * Fitten code explaintation(解释):
+ * boot_image_info_lookup函数的作用是根据给定的端点（endpoint）查找并填充与启动镜像相关的信息。
+ *  endpoint_t endpoint：要查找的端点。
+ *  struct boot_image *image：指向boot_image结构体的指针，表示启动镜像的基本信息。
+ *  struct boot_image **ip：指向boot_image结构体指针的指针，用于存储查找到的启动镜像基本信息。
+ *  struct boot_image_priv **pp：指向boot_image_priv结构体指针的指针，用于存储查找到的启动镜像私有信息。
+ *  struct boot_image_sys **sp：指向boot_image_sys结构体指针的指针，用于存储查找到的启动镜像系统信息。
+ *  struct boot_image_dev **dp：指向boot_image_dev结构体指针的指针，用于存储查找到的启动镜像设备信息。
+ * 总结
+ * boot_image_info_lookup函数是一个辅助函数，用于在启动过程中根据端点查找并填充启动镜像的相关信息。
+ * 这些信息包括启动镜像的基本信息、私有信息、系统信息和设备信息。这个函数在系统启动和初始化过程中非常有用，
+ * 确保系统能够正确加载和配置启动镜像。
+********************************************************************************************/
 static void boot_image_info_lookup( endpoint_t endpoint, struct             // lookup:查找
 	boot_image *image, struct boot_image **ip, struct boot_image_priv **pp,
 	struct boot_image_sys **sp, struct boot_image_dev **dp);
-static void catch_boot_init_ready(endpoint_t endpoint);
+
+/********************************************************************************************
+ * Fitten code explaintation(解释):
+ * 功能：catch_boot_init_ready函数的主要作用是在系统启动初始化完成后，执行一些特定的操作。具体来说，
+ *      它会根据给定的端点，处理与启动初始化完成相关的任务。
+ * 参数：
+ *      endpoint_t endpoint：表示系统启动初始化完成后的端点。
+ * 总结：
+ *      catch_boot_init_ready函数是一个辅助函数，用于在系统启动初始化完成后执行一些特定的操作。
+ *      这些操作可能包括通知其他组件或服务、启动其他子系统或执行一些初始化后的配置。这个函数在系统启动和
+ *      初始化过程中非常有用，确保系统能够正确地从启动状态过渡到运行状态。
+********************************************************************************************/
+static void catch_boot_init_ready(endpoint_t endpoint);         
+
+
+
+
+/********************************************************************************************
+ * Fitten code explaintation(解释):
+ * 功能：get_work函数的作用是从消息队列中获取一个工作任务，并将其存储在m_ptr指向的消息结构体中。
+ *      同时，它还会将获取任务的状态存储在status_ptr指向的整数中。
+ * 参数：
+ *      message *m_ptr：指向message结构体的指针，用于存储获取到的工作任务消息。
+ *      int *status_ptr：指向整数的指针，用于存储获取到的工作任务消息的状态。
+ * 总结：get_work函数是一个辅助函数，用于从消息队列中获取工作任务。这个函数在系统的事件处理和任务调度中
+ *      非常有用，确保系统能够正确地处理和分发任务。通过获取工作任务，系统可以进一步处理这些任务，
+ *      从而实现各种功能和操作。
+********************************************************************************************/
 static void get_work(message *m_ptr, int *status_ptr);
 
 /* SEF(System Event Framework) functions and variables. */ 
@@ -60,8 +110,15 @@ int main(void)
 
       /* Wait for request(请求) message. */
       get_work(&m, &ipc_status);
-      who_e = m.m_source;
-      if(rs_isokendpt(who_e, &who_p) != OK) {      // Check if the source is valid.who_p:进程号
+      who_e = m.m_source;       /* who sent the message；(endpoint_t m_source;) */
+
+      /*************************************************************************
+       * rs_isokendpt函数用于验证给定的端点（endpoint）是否有效。
+       * 具体来说，该函数检查端点是否在有效的进程范围内。
+                endpoint_t endpoint：要验证的端点。
+                int *proc：一个指向整数的指针，用于存储从端点提取的进程号。
+      *************************************************************************/
+      if(rs_isokendpt(who_e, &who_p) != OK) {      // Check if the source is valid.who_p:进程号  TODO：
           panic("message from bogus source: %d", who_e);
       }
 
@@ -79,7 +136,7 @@ int main(void)
        */
       if (is_ipc_notify(ipc_status)) {
           switch (who_p) {          // who_p:进程号
-          case CLOCK:
+          case CLOCK:               // #define CLOCK  	((endpoint_t) -3) /* alarms and other clock functions */
 	      do_period(&m);			/* check services status */
 	      continue;
 	  default:				        /* heartbeat notification */
@@ -96,32 +153,33 @@ int main(void)
        * Handle the request and send a reply to the caller.(处理请求并向呼叫者发送回复) 
        */
       else {
-          /* Handler functions are responsible for permission(许可,批准,准许) checking. */
+          /* Handler functions are responsible for permission(许可,批准,准许) checking.(处理程序功能负责权限检查) */
           switch(call_nr) {
           /* User requests. */
-	      case RS_UP:		    result = do_up(&m);		        break;
-          case RS_DOWN: 	    result = do_down(&m); 		    break;
-          case RS_REFRESH: 	    result = do_refresh(&m); 	    break;
-          case RS_RESTART: 	    result = do_restart(&m); 	    break;
-          case RS_SHUTDOWN: 	result = do_shutdown(&m); 	    break;
-          case RS_UPDATE: 	    result = do_update(&m); 	    break;
-          case RS_CLONE: 	    result = do_clone(&m); 		    break;
-	      case RS_UNCLONE: 	    result = do_unclone(&m);	    break;
-          case RS_EDIT: 	    result = do_edit(&m); 		    break;
-	      case RS_SYSCTL:	    result = do_sysctl(&m);		    break;
-	      case RS_FI:	        result = do_fi(&m);		        break;
-          case RS_GETSYSINFO:   result = do_getsysinfo(&m);     break;
-	      case RS_LOOKUP:	    result = do_lookup(&m);		    break;
+	      case RS_UP:		    result = do_up(&m);		        break;  /* start system service */
+          case RS_DOWN: 	    result = do_down(&m); 		    break;  /* stop system service */
+          case RS_REFRESH: 	    result = do_refresh(&m); 	    break;  /* refresh(使恢复) system service */
+          case RS_RESTART: 	    result = do_restart(&m); 	    break;  /* restart system service */
+          case RS_SHUTDOWN: 	result = do_shutdown(&m); 	    break;  /* alert about shutdown(关机警报) */
+          case RS_UPDATE: 	    result = do_update(&m); 	    break;  /* update system service */
+          case RS_CLONE: 	    result = do_clone(&m); 		    break;  /* clone system service */
+	      case RS_UNCLONE: 	    result = do_unclone(&m);	    break;  /* unclone system service */
+          case RS_EDIT: 	    result = do_edit(&m); 		    break;  /* edit system service */
+	      case RS_SYSCTL:	    result = do_sysctl(&m);		    break;  /* perform system ctl action */
+	      case RS_FI:	        result = do_fi(&m);		        break;  /* inject(注入/增加) fault into service */
+          case RS_GETSYSINFO:   result = do_getsysinfo(&m);     break;  /* get system information */
+	      case RS_LOOKUP:	    result = do_lookup(&m);		    break;  /* lookup server name */
 	      /* Ready messages. */
-	      case RS_INIT: 	    result = do_init_ready(&m); 	break;
-	      case RS_LU_PREPARE: 	result = do_upd_ready(&m); 	    break;
+	      case RS_INIT: 	    result = do_init_ready(&m); 	break;  /* service init message */
+	      case RS_LU_PREPARE: 	result = do_upd_ready(&m); 	    break;  /* prepare to update message */
           default: 
               printf("RS: warning: got unexpected request %d from %d\n",
                   m.m_type, m.m_source);
-              result = ENOSYS;
+              result = ENOSYS;      // #define	ENOSYS		38	/* Invalid system call number */
           }
 
           /* Finally send reply message, unless disabled.(最后发送回复消息，除非禁用。) */
+          // #define EDONTREPLY   (_SIGN 203 )  /* pseudo-code(伪代码): don't send a reply */
           if (result != EDONTREPLY) {
 	          m.m_type = result;
               reply(who_e, NULL, &m);
@@ -134,21 +192,28 @@ int main(void)
 
 /*===========================================================================*
  *			       sef_local_startup			     *
+  * Fitten code explaintation(解释):
+ * 功能：sef_local_startup函数的作用是进行本地启动初始化，注册各种回调函数，
+ *      以便在系统启动和运行过程中处理不同的事件和响应。
+ * 参数：
+ * 总结：sef_local_startup函数是一个关键的初始化函数，用于在系统启动时注册各种回调函数。
+ *      这些回调函数用于处理系统启动、重启、实时更新等不同情况下的初始化和响应。
+ *      通过这种方式，系统能够灵活地处理各种启动和运行时的事件，确保系统的稳定和可靠运行。
  *===========================================================================*/
 static void sef_local_startup()
 {
   /* Register init callbacks(回调). */
-  sef_setcb_init_fresh(sef_cb_init_fresh);
-  sef_setcb_init_restart(sef_cb_init_restart);
-  sef_setcb_init_lu(sef_cb_init_lu);
+  sef_setcb_init_fresh(sef_cb_init_fresh);      // 注册一个新的初始化回调函数，用于处理系统全新启动的情况。
+  sef_setcb_init_restart(sef_cb_init_restart);  // 注册一个新的初始化回调函数，用于处理系统重启的情况。
+  sef_setcb_init_lu(sef_cb_init_lu);     // 注册一个新的初始化回调函数，用于处理系统live update的情况。
 
   /* Register response(响应) callbacks. */
-  sef_setcb_init_response(sef_cb_init_response);
-  sef_setcb_lu_response(sef_cb_lu_response);
+  sef_setcb_init_response(sef_cb_init_response);// 注册一个初始化的响应回调函数，用于处理初始化请求的响应。
+  sef_setcb_lu_response(sef_cb_lu_response);    // 注册一个实时更新响应回调函数，用于处理实时更新请求的响应。
 
   /* Register signal callbacks. */
-  sef_setcb_signal_handler(sef_cb_signal_handler);
-  sef_setcb_signal_manager(sef_cb_signal_manager);
+  sef_setcb_signal_handler(sef_cb_signal_handler);  // TODO
+  sef_setcb_signal_manager(sef_cb_signal_manager);  // TODO
 
   /* Let SEF perform startup. */
   sef_startup();
@@ -156,6 +221,10 @@ static void sef_local_startup()
 
 /*===========================================================================*
  *		            sef_cb_init_fresh                                *
+  * Fitten code explaintation(解释):
+ * 功能：
+ * 参数：
+ * 总结：
  *===========================================================================*/
 static int sef_cb_init_fresh(int UNUSED(type), sef_init_info_t *UNUSED(info))
 {
@@ -497,6 +566,10 @@ static int sef_cb_init_fresh(int UNUSED(type), sef_init_info_t *UNUSED(info))
 
 /*===========================================================================*
  *		            sef_cb_init_restart                              *
+  * Fitten code explaintation(解释):
+ * 功能：
+ * 参数：
+ * 总结：
  *===========================================================================*/
 static int sef_cb_init_restart(int type, sef_init_info_t *info)
 {
@@ -547,6 +620,10 @@ static int sef_cb_init_restart(int type, sef_init_info_t *info)
 
 /*===========================================================================*
  *		              sef_cb_init_lu                                 *
+  * Fitten code explaintation(解释):
+ * 功能：
+ * 参数：
+ * 总结：
  *===========================================================================*/
 static int sef_cb_init_lu(int type, sef_init_info_t *info)
 {
@@ -589,6 +666,10 @@ static int sef_cb_init_lu(int type, sef_init_info_t *info)
 
 /*===========================================================================*
 *			    sef_cb_init_response			     *
+ * Fitten code explaintation(解释):
+ * 功能：
+ * 参数：
+ * 总结：
  *===========================================================================*/
 int sef_cb_init_response(message *m_ptr)
 {
@@ -612,6 +693,10 @@ int sef_cb_init_response(message *m_ptr)
 
 /*===========================================================================*
 *			     sef_cb_lu_response				     *
+ * Fitten code explaintation(解释):
+ * 功能：
+ * 参数：
+ * 总结：
  *===========================================================================*/
 int sef_cb_lu_response(message *m_ptr)
 {
@@ -629,6 +714,10 @@ int sef_cb_lu_response(message *m_ptr)
 
 /*===========================================================================*
  *		            sef_cb_signal_handler                            *
+  * Fitten code explaintation(解释):
+ * 功能：
+ * 参数：
+ * 总结：
  *===========================================================================*/
 static void sef_cb_signal_handler(int signo)
 {
@@ -645,6 +734,10 @@ static void sef_cb_signal_handler(int signo)
 
 /*===========================================================================*
  *		            sef_cb_signal_manager                            *
+  * Fitten code explaintation(解释):
+ * 功能：
+ * 参数：
+ * 总结：
  *===========================================================================*/
 static int sef_cb_signal_manager(endpoint_t target, int signo)
 {
@@ -719,7 +812,7 @@ struct boot_image_dev **dp;
 /* Lookup entries in boot image tables. */
   int i;
 
-  /* When requested, locate the corresponding entry in the boot image table
+  /* When requested, locate(指出/查找) the corresponding entry in the boot image table
    * or panic if not found.
    */
   if(ip) {
@@ -734,7 +827,7 @@ struct boot_image_dev **dp;
       }
   }
 
-  /* When requested, locate the corresponding entry in the boot image priv table
+  /* When requested, locate(指出/查找) the corresponding entry in the boot image priv table
    * or panic if not found.
    */
   if(pp) {
@@ -749,8 +842,8 @@ struct boot_image_dev **dp;
       }
   }
 
-  /* When requested, locate the corresponding entry in the boot image sys table
-   * or resort to the default entry if not found.
+  /* When requested, locate(指出/查找) the corresponding entry in the boot image sys table
+   * or resort(求助) to the default entry if not found.
    */
   if(sp) {
       for (i=0; boot_image_sys_table[i].endpoint != DEFAULT_BOOT_NR; i++) {
@@ -764,7 +857,7 @@ struct boot_image_dev **dp;
       }
   }
 
-  /* When requested, locate the corresponding entry in the boot image dev table
+  /* When requested, locate(指出/查找) the corresponding entry in the boot image dev table
    * or resort to the default entry if not found.
    */
   if(dp) {
